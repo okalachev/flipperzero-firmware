@@ -32,6 +32,7 @@ APP_LF_RFID	= 1
 APP_NFC		= 1
 APP_SUBGHZ	= 1
 APP_ABOUT	= 1
+APP_IMU		= 1
 
 # Plugins
 APP_MUSIC_PLAYER = 1
@@ -198,6 +199,11 @@ CFLAGS		+= -DAPP_IBUTTON
 SRV_GUI		= 1
 endif
 
+APP_IMU ?= 0
+ifeq ($(APP_IMU), 1)
+CFLAGS		+= -DAPP_IMU
+# SRV_GUI		= 1
+endif
 
 # Services
 # that will start with OS
