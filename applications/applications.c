@@ -155,7 +155,7 @@ const FlipperApplication FLIPPER_APPS[] = {
 #endif
 
 #ifdef APP_IMU
-    {.app = imu_app, .name = "IMU", .stack_size = 2048, .icon = &A_GPIO_14},
+    {.app = imu_app, .name = "IMU", .stack_size = 2048, .icon = &A_IMU_14},
 #endif
 
 };
