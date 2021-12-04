@@ -1,5 +1,5 @@
 #include <math.h>
-#include "mpu6050/MPU6050.h"
+#include "mpu6050/mpu6050.h"
 
 static MPU6050 mpu;
 
