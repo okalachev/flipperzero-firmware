@@ -39,6 +39,7 @@ extern int32_t subghz_app(void* p);
 extern int32_t usb_mouse_app(void* p);
 extern int32_t usb_test_app(void* p);
 extern int32_t vibro_test_app(void* p);
+extern int32_t imu_app(void* p);
 
 // Plugins
 extern int32_t music_player_app(void* p);
@@ -151,6 +152,10 @@ const FlipperApplication FLIPPER_APPS[] = {
 
 #ifdef APP_BAD_USB
     {.app = bad_usb_app, .name = "Bad USB", .stack_size = 2048, .icon = &A_BadUsb_14},
+#endif
+
+#ifdef APP_IMU
+    {.app = imu_app, .name = "IMU", .stack_size = 2048, .icon = &A_GPIO_14},
 #endif
 
 };
