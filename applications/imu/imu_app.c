@@ -24,10 +24,16 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
     struct Vector gyro = imu_get_gyro();
     sprintf(gyro_str, "Gyro: %.3f %.3f %.3f ", gyro.XAxis, gyro.YAxis, gyro.ZAxis);
 
+    char att_str[40];
+    struct Vector att = imu_get_attitude();
+    sprintf(att_str, "Roll: %.3f° Pitch: %.3f°", att.XAxis, att.YAxis);
+
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str(canvas, 2, 22, acc_str);
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str(canvas, 2, 34, gyro_str);
+    canvas_set_font(canvas, FontSecondary);
+    canvas_draw_str(canvas, 2, 46, att_str);
 }
 
 void imu_input_callback(InputEvent* input_event, void* ctx) {

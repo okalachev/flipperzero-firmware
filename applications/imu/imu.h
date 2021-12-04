@@ -20,6 +20,8 @@ struct Vector imu_get_acc();
 
 struct Vector imu_get_gyro();
 
+struct Vector imu_get_attitude();
+
 #ifdef __cplusplus
 }
 #endif

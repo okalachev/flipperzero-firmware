@@ -1,3 +1,4 @@
+#include <math.h>
 #include "mpu6050/MPU6050.h"
 
 static MPU6050 mpu;
@@ -20,6 +21,20 @@ Vector imu_get_acc() {
 
 Vector imu_get_gyro() {
     return mpu.readNormalizeGyro();
+}
+
+// Return Euler angles
+Vector imu_get_attitude() {
+    Vector att;
+    Vector acc = mpu.readNormalizeAccel();
+
+    int pitch = -(atan2(acc.XAxis, sqrt(acc.YAxis*acc.YAxis + acc.ZAxis*acc.ZAxis))*180.0)/M_PI;
+    int roll = (atan2(acc.YAxis, acc.ZAxis)*180.0)/M_PI;
+
+    att.XAxis = roll;
+    att.YAxis = pitch;
+
+    return att;
 }
 
 #ifdef __cplusplus
