@@ -26,7 +26,7 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
 
     char att_str[40];
     struct Vector att = imu_get_attitude();
-    sprintf(att_str, "Roll: %.3f° Pitch: %.3f°", att.XAxis, att.YAxis);
+    sprintf(att_str, "Roll: %.1f° Pitch: %.1f°", att.XAxis, att.YAxis);
 
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str(canvas, 2, 22, acc_str);
