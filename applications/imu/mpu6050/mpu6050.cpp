@@ -423,6 +423,21 @@ Vector MPU6050::readScaledAccel(void)
 
 Vector MPU6050::readRawGyro(void)
 {
+    uint8_t reg = MPU6050_REG_GYRO_XOUT_H;
+    uint8_t buffer[6];
+    furi_hal_i2c_trx(&furi_hal_i2c_handle_external, mpuAddress << 1, &reg, 1, buffer, 6, 50);
+
+    uint8_t xha = buffer[0];
+    uint8_t xla = buffer[1];
+    uint8_t yha = buffer[2];
+    uint8_t yla = buffer[3];
+    uint8_t zha = buffer[4];
+    uint8_t zla = buffer[5];
+
+    rg.XAxis = xha << 8 | xla;
+    rg.YAxis = yha << 8 | yla;
+    rg.ZAxis = zha << 8 | zla;
+
     return rg;
 
     // Wire.beginTransmission(mpuAddress);

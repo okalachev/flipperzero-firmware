@@ -18,9 +18,14 @@ static void imu_cli(Cli* cli, string_t args, void* context) {
     printf("IMU OK\r\n");
 
     auto acc = mpu.readScaledAccel();
-    printf("acc x: %.6f\r\n", acc.XAxis);
-    printf("acc y: %.6f\r\n", acc.YAxis);
-    printf("acc z: %.6f\r\n", acc.ZAxis);
+    printf("acc x: %.3f\r\n", acc.XAxis);
+    printf("acc y: %.3f\r\n", acc.YAxis);
+    printf("acc z: %.3f\r\n", acc.ZAxis);
+
+    auto gyro = mpu.readNormalizeGyro();
+    printf("gyro x: %.3f\r\n", gyro.XAxis);
+    printf("gyro y: %.3f\r\n", gyro.YAxis);
+    printf("gyro z: %.3f\r\n", gyro.ZAxis);
 
     mpu.end();
 }
