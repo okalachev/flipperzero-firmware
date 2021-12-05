@@ -725,7 +725,7 @@ void MPU6050::writeRegister8(uint8_t reg, uint8_t value)
 int16_t MPU6050::readRegister16(uint8_t reg)
 {
     uint16_t value;
-    furi_hal_i2c_trx(&furi_hal_i2c_handle_external, mpuAddress << 1, &reg, 1, (uint8_t*)&value, 16, 50);
+    furi_hal_i2c_trx(&furi_hal_i2c_handle_external, mpuAddress << 1, &reg, 1, (uint8_t*)&value, 2, 50);
     return value;
 
     // int16_t value;
