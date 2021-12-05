@@ -7,8 +7,8 @@ static MPU6050 mpu;
 extern "C" {
 #endif
 
-void imu_init() {
-    mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G);
+bool imu_init() {
+    return mpu.begin(MPU6050_SCALE_250DPS, MPU6050_RANGE_2G);
 }
 
 void imu_release() {

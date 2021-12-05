@@ -12,7 +12,7 @@ struct Vector
 extern "C" {
 #endif
 
-void imu_init();
+bool imu_init();
 
 void imu_release();
 
