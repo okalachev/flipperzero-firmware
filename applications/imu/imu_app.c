@@ -11,6 +11,8 @@
 bool imu_ok = false;
 bool calibrating = false;
 NotificationApp* notification;
+bool calibrate_level = false;
+int level_cal_x = 0, level_cal_y = 0;
 
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 
@@ -72,6 +74,15 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
         struct Vector att = imu_get_attitude();
         int x = constrain(GUI_DISPLAY_WIDTH / 2 - att.XAxis * 2, 0, GUI_DISPLAY_WIDTH);
         int y = constrain(GUI_DISPLAY_HEIGHT / 2 + att.YAxis * 2, 0, GUI_DISPLAY_HEIGHT);
+
+        if (calibrate_level) {
+            level_cal_x = GUI_DISPLAY_WIDTH / 2 - x;
+            level_cal_y = GUI_DISPLAY_HEIGHT / 2 - y;
+            calibrate_level = false;
+        }
+
+        x += level_cal_x;
+        y += level_cal_y;
 
         if (x == GUI_DISPLAY_WIDTH / 2 && y == GUI_DISPLAY_HEIGHT / 2) {
             // notification_message(notification, &sequence_set_vibro_on);
@@ -149,6 +160,8 @@ int32_t imu_app(void* p) {
                 screen--;
             }
             view_port_update(view_port);
+        } else if (event.input.type == InputTypeShort && event.input.key == InputKeyOk) {
+            calibrate_level = true;
         }
         // if(event.input.key == InputKeyOk) {
         //     if(event.input.type == InputTypePress) {
