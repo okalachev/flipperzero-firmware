@@ -8,6 +8,7 @@
 #include "imu.h"
 
 bool imu_ok = false;
+bool calibrating = false;
 typedef struct {
     InputEvent input;
 } IMUEvent;
@@ -16,7 +17,10 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
     canvas_clear(canvas);
     canvas_set_font(canvas, FontPrimary);
 
-    if (!imu_ok) {
+    if (calibrating) {
+        canvas_draw_str(canvas, 2, 10, "Calibrating, don't move");
+        return;
+    } else if (!imu_ok) {
         canvas_draw_str(canvas, 2, 10, "IMU not detected");
         return;
     }
@@ -67,6 +71,15 @@ int32_t imu_app(void* p) {
     gui_add_view_port(gui, view_port, GuiLayerFullscreen);
 
     // NotificationApp* notification = furi_record_open("notification");
+
+    // Calibration
+    if (imu_ok) {
+        calibrating = true;
+        view_port_update(view_port);
+        imu_calibrate();
+        calibrating = false;
+        view_port_update(view_port);
+    }
 
     IMUEvent event;
 

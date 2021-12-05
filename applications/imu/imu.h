@@ -16,6 +16,8 @@ bool imu_init();
 
 void imu_release();
 
+void imu_calibrate();
+
 struct Vector imu_get_acc();
 
 struct Vector imu_get_gyro();

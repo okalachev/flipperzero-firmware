@@ -15,6 +15,10 @@ void imu_release() {
     mpu.end();
 }
 
+void imu_calibrate() {
+    mpu.calibrateGyro();
+}
+
 Vector imu_get_acc() {
     return mpu.readScaledAccel();
 }
