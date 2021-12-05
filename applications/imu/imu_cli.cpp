@@ -11,8 +11,8 @@ MPU6050 mpu;
 static void imu_cli(Cli* cli, string_t args, void* context) {
     printf("Hello, IMU!\r\n");
 
-    while(!mpu.begin(MPU6050_SCALE_250DPS, MPU6050_RANGE_2G)) {
-        printf("IMU NOT OK");
+    if (!mpu.begin(MPU6050_SCALE_250DPS, MPU6050_RANGE_2G)) {
+        printf("IMU NOT OK\r\n");
         return;
     }
     printf("IMU OK\r\n");
