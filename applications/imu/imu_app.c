@@ -18,11 +18,11 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
 
     char acc_str[40];
     struct Vector acc = imu_get_acc();
-    sprintf(acc_str, "Acc: %.3f %.3f %.3f ", acc.XAxis, acc.YAxis, acc.ZAxis);
+    sprintf(acc_str, "Acc: %.1f %.1f %.1f ", acc.XAxis, acc.YAxis, acc.ZAxis);
 
     char gyro_str[40];
     struct Vector gyro = imu_get_gyro();
-    sprintf(gyro_str, "Gyro: %.3f %.3f %.3f ", gyro.XAxis, gyro.YAxis, gyro.ZAxis);
+    sprintf(gyro_str, "Gyro: %.1f %.1f %.1f ", gyro.XAxis, gyro.YAxis, gyro.ZAxis);
 
     char att_str[40];
     struct Vector att = imu_get_attitude();
