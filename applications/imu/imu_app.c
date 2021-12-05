@@ -2,6 +2,7 @@
 #include <furi-hal.h>
 
 #include <gui/gui.h>
+#include <gui/gui_i.h>
 #include <input/input.h>
 #include <notification/notification-messages.h>
 
@@ -9,6 +10,11 @@
 
 bool imu_ok = false;
 bool calibrating = false;
+
+#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+
+enum { MAIN = 0, AUX, LEVEL } screen = MAIN;
+
 typedef struct {
     InputEvent input;
 } IMUEvent;
@@ -25,26 +31,50 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
         return;
     }
 
-    canvas_draw_str(canvas, 2, 10, "IMU application");
+    if (screen == MAIN) {
 
-    char acc_str[40];
-    struct Vector acc = imu_get_acc();
-    sprintf(acc_str, "Acc: %.1f %.1f %.1f ", acc.XAxis, acc.YAxis, acc.ZAxis);
+        canvas_draw_str(canvas, 2, 10, "IMU application");
 
-    char gyro_str[40];
-    struct Vector gyro = imu_get_gyro();
-    sprintf(gyro_str, "Gyro: %.1f %.1f %.1f ", gyro.XAxis, gyro.YAxis, gyro.ZAxis);
+        char acc_str[40];
+        struct Vector acc = imu_get_acc();
+        sprintf(acc_str, "Acc: %.1f %.1f %.1f ", acc.XAxis, acc.YAxis, acc.ZAxis);
 
-    char att_str[40];
-    struct Vector att = imu_get_attitude();
-    sprintf(att_str, "Roll: %.1f° Pitch: %.1f°", att.XAxis, att.YAxis);
+        char gyro_str[40];
+        struct Vector gyro = imu_get_gyro();
+        sprintf(gyro_str, "Gyro: %.1f %.1f %.1f ", gyro.XAxis, gyro.YAxis, gyro.ZAxis);
 
-    canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 2, 22, acc_str);
-    canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 2, 34, gyro_str);
-    canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 2, 46, att_str);
+        char att_str[40];
+        struct Vector att = imu_get_attitude();
+        sprintf(att_str, "Roll: %.1f° Pitch: %.1f°", att.XAxis, att.YAxis);
+
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 2, 22, acc_str);
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 2, 34, gyro_str);
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 2, 46, att_str);
+    
+    } else if (screen == AUX) {
+
+        canvas_draw_str(canvas, 2, 10, "IMU aux");
+
+        char temp_str[40];
+        sprintf(temp_str, "Temperature: %.1f *C", imu_get_temp());
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 2, 22, temp_str);
+
+    } else if (screen == LEVEL) {
+
+        canvas_draw_str(canvas, 2, 10, "IMU level");
+        canvas_draw_circle(canvas, GUI_DISPLAY_WIDTH / 2, GUI_DISPLAY_HEIGHT / 2, 6);
+
+        struct Vector att = imu_get_attitude();
+        int x = constrain(GUI_DISPLAY_WIDTH / 2 - att.XAxis * 2, 0, GUI_DISPLAY_WIDTH);
+        int y = constrain(GUI_DISPLAY_HEIGHT / 2 + att.YAxis * 2, 0, GUI_DISPLAY_HEIGHT);
+
+        canvas_draw_circle(canvas, x, y, 5);
+    
+    }
 }
 
 void imu_input_callback(InputEvent* input_event, void* ctx) {
@@ -96,6 +126,20 @@ int32_t imu_app(void* p) {
 
             imu_release();
             return 0;
+        } else if (event.input.type == InputTypeShort && event.input.key == InputKeyRight) {
+            if (screen == LEVEL) {
+                screen = MAIN;
+            } else {
+                screen++;
+            }
+            view_port_update(view_port);
+        } else if (event.input.type == InputTypeShort && event.input.key == InputKeyLeft) {
+            if (screen == MAIN) {
+                screen = LEVEL;
+            } else {
+                screen--;
+            }
+            view_port_update(view_port);
         }
         // if(event.input.key == InputKeyOk) {
         //     if(event.input.type == InputTypePress) {

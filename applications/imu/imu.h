@@ -24,6 +24,8 @@ struct Vector imu_get_gyro();
 
 struct Vector imu_get_attitude();
 
+float imu_get_temp();
+
 #ifdef __cplusplus
 }
 #endif

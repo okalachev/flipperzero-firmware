@@ -41,6 +41,10 @@ Vector imu_get_attitude() {
     return att;
 }
 
+float imu_get_temp() {
+    return mpu.readTemperature();
+}
+
 #ifdef __cplusplus
 }
 #endif
