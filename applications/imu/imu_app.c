@@ -7,6 +7,7 @@
 
 #include "imu.h"
 
+bool imu_ok = false;
 typedef struct {
     InputEvent input;
 } IMUEvent;
@@ -14,6 +15,12 @@ typedef struct {
 void imu_draw_callback(Canvas* canvas, void* ctx) {
     canvas_clear(canvas);
     canvas_set_font(canvas, FontPrimary);
+
+    if (!imu_ok) {
+        canvas_draw_str(canvas, 2, 10, "IMU not detected");
+        return;
+    }
+
     canvas_draw_str(canvas, 2, 10, "IMU application");
 
     char acc_str[40];
@@ -45,7 +52,7 @@ void imu_input_callback(InputEvent* input_event, void* ctx) {
 }
 
 int32_t imu_app(void* p) {
-    imu_init();
+    imu_ok = imu_init();
 
     osMessageQueueId_t event_queue = osMessageQueueNew(8, sizeof(IMUEvent), NULL);
 
