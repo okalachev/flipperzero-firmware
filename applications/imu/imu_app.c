@@ -10,6 +10,7 @@
 
 bool imu_ok = false;
 bool calibrating = false;
+NotificationApp* notification;
 
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 
@@ -72,6 +73,14 @@ void imu_draw_callback(Canvas* canvas, void* ctx) {
         int x = constrain(GUI_DISPLAY_WIDTH / 2 - att.XAxis * 2, 0, GUI_DISPLAY_WIDTH);
         int y = constrain(GUI_DISPLAY_HEIGHT / 2 + att.YAxis * 2, 0, GUI_DISPLAY_HEIGHT);
 
+        if (x == GUI_DISPLAY_WIDTH / 2 && y == GUI_DISPLAY_HEIGHT / 2) {
+            // notification_message(notification, &sequence_set_vibro_on);
+            notification_message(notification, &sequence_set_green_255);
+        } else {
+            // notification_message(notification, &sequence_reset_vibro);
+            notification_message(notification, &sequence_reset_green);
+        }
+
         canvas_draw_circle(canvas, x, y, 5);
     
     }
@@ -100,7 +109,7 @@ int32_t imu_app(void* p) {
     Gui* gui = furi_record_open("gui");
     gui_add_view_port(gui, view_port, GuiLayerFullscreen);
 
-    // NotificationApp* notification = furi_record_open("notification");
+    notification = furi_record_open("notification");
 
     // Calibration
     if (imu_ok) {
