@@ -316,3 +316,6 @@ SRV_STORAGE ?= 0
 ifeq ($(SRV_STORAGE), 1)
 CFLAGS		+= -DSRV_STORAGE
 endif
+
+# chess
+CFLAGS		+= -D_NOPOPCNT
